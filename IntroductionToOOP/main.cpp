@@ -5,6 +5,8 @@ using std::cin;
 using std::cout;
 using std::endl;
 
+#define delimiter "\n-----------------------------------------------------------------\n"
+
 class Point
 {
 	double x;
@@ -29,7 +31,8 @@ public:
 	{
 		return y;
 	}
-	//			Constructors:
+
+	//						Constructors:
 	//Point()
 	//{
 	//	//RAII - Resource Aqualisation - Is Inicialisation 
@@ -49,13 +52,29 @@ public:
 		this->y = y;
 		cout << "Constructor:\t" << this << endl;
 	}
+	Point(const Point& other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+		cout << "CopyConstructor:" << this << endl;
+	}
 	~Point()
 	{
 		cout << "Destructor:\t" << this << endl;
 	}
-	//			Methods:
+
+	//						Operators:
+	Point operator=(const Point& other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+		cout << "CopyAssignment:\t" << this << endl;
+		return *this;
+	}
+
+	//						Methods:
 //2. ¬ классе Point написать метод ? ? ? distance(? ? ? ), который возвращает рассто€ние до указанной точки;
-	double distance(Point other)const
+	double distance(const Point& other)const
 	{
 		// –ассто€ние между двум€ точками в системе координат находим по теореме пифагора, где рассто€ние между двум€ точками - гипотенуза, разница координат 'x' и 'y' - катеты
 		return sqrt((this->x - other.x) * (this->x - other.x) + (this->y - other.y) * (this->y - other.y));
@@ -69,8 +88,11 @@ public:
 
 //#define STRUCT_POINT
 //#define DISTANCE_CHECK
+//#define CONSTRUCTORS_CHECK
+//#define ASSIGNMENT_CHECK_1
+#define ASSIGNMENT_CHECK_2
 
-double distance(Point A, Point B);
+double distance(const Point& A, const Point& B);
 
 void main()
 {
@@ -100,23 +122,52 @@ void main()
 	Point A;
 	A.set_x(2);
 	A.set_y(3);
+	cout << A.get_x() << '\t' << A.get_y() << endl;
 	Point B;
 	B.set_x(7);
 	B.set_y(8);
-	cout << A.get_x() << '\t' << A.get_y() << endl;
+	cout << B.get_x() << '\t' << B.get_y() << endl;
+	cout << delimiter << endl;
 	cout << "–ассто€ние от точки ј до точки ¬: " << A.distance(B) << endl;
+	cout << delimiter << endl;
 	cout << "–ассто€ние от точки B до точки A: " << B.distance(A) << endl;
+	cout << delimiter << endl;
 	cout << "–ассто€ние между точками A и B: " << distance(A, B) << endl;
+	cout << delimiter << endl;
+	cout << "–ассто€ние между точками B и A: " << distance(B, A) << endl;
+	cout << delimiter << endl;
 #endif
+
+#ifdef CONSTRUCTORS_CHECK
 	Point A; // default constructor
 	A.print();
 	Point B(2, 3);
 	B.print();
 	Point C = 4; //Single-Argument constructor
 	C.print();
+	Point D = C;
+	D.print();
+#endif
+
+#ifdef ASSIGNMENT_CHECK_1
+	Point A(2, 3);
+	A.print();
+	Point B = A;		//CopyConstructor
+	B.print();
+	Point C;			//DefaultConstructor
+	C = B;				//Assignment operator
+	C.print();
+#endif
+
+#ifdef ASSIGNMENT_CHECK_2
+	int a, b, c;
+	a = b = c = 0;
+	Point A, B, C;
+	A = B = C = Point(2, 3);
+#endif
 }
 
-double distance(Point A, Point B)
+double distance(const Point& A, const Point& B)
 {
 	double x_distance = A.get_x() - B.get_x();
 	double y_distance = A.get_y() - B.get_y();
