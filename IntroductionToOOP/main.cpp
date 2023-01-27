@@ -84,6 +84,12 @@ public:
 		y++;
 		return old;
 	}
+	Point& operator()(double x, double y)
+	{
+		set_x(x);
+		set_y(y);
+		return *this;
+	}
 
 	//						Methods:
 //2. В классе Point написать метод ? ? ? distance(? ? ? ), который возвращает расстояние до указанной точки;
@@ -108,6 +114,10 @@ public:
 
 double distance(const Point& A, const Point& B);
 Point operator+(const Point& left, const Point& right);
+bool operator==(const Point& left, const Point& right);
+bool operator!=(const Point& left, const Point& right);
+std::ostream& operator<<(std::ostream& os, const Point& obj);
+std::istream& operator>>(std::istream& is, Point& obj);
 
 void main()
 {
@@ -188,16 +198,32 @@ void main()
 #endif
 
 #ifdef A1
-	int a = 2;
-	int b = 3;
-	int c = a + b;
+	//int a = 2;
+	//int b = 3;
+	//int c = a + b;
+
+	//Point A(2, 3);
+	//Point B(4, 5);
+	////Point C = A + B;
+	////C.print();
+	////C++;
+	////C.print();
+	//cout << (A != B) << endl;
 
 	Point A(2, 3);
-	Point B(4, 5);
-	Point C = A + B;
-	C.print();
-	C++;
-	C.print();
+	A.print();
+
+	//A.set_x(12);
+	//A.set_y(13);
+	//A.print();
+
+	A(22, 33);
+	//A.print();
+	cout << A << endl;
+
+	cout << "Введите координаты точки: ";
+	cin >> A;		//cin - объект класса istream
+	cout << A << endl;
 
 #endif
 }
@@ -216,4 +242,32 @@ Point operator+(const Point& left, const Point& right)
 	res.set_x(left.get_x() + right.get_x());
 	res.set_y(left.get_y() + right.get_y());
 	return res;
+}
+
+//						Comparison operators:
+bool operator==(const Point& left, const Point& right)
+{
+	/*if (left.get_x() == right.get_x() && left.get_y() == right.get_y())
+		return true;
+	else
+		return false;*/
+	return left.get_x() == right.get_x() && left.get_y() == right.get_y();
+}
+
+bool operator!=(const Point& left, const Point& right)
+{
+	return !(left == right);
+}
+
+std::ostream& operator<<(std::ostream& os, const Point& obj)
+{
+	return os << "X = " << obj.get_x() << "\tY = " << obj.get_y();
+}
+
+std::istream& operator>>(std::istream& is, Point& obj)
+{
+	double x, y;
+	is >> x >> y;
+	obj(x, y);
+	return is;
 }
