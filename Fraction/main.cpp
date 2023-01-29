@@ -1,12 +1,12 @@
-//Fraction
+ï»¿//Fraction
 #include<iostream>
 using namespace std;
 
-class Fraction
+class
 {
-	int integer;		//öåëàÿ ÷àñòü
-	int numerator;		//÷èñëèòåëü
-	int denominator;	//çíàìåíàòåëü
+	int integer;		//Ð¦ÐµÐ»Ð°Ñ Ñ‡Ð°ÑÑ‚ÑŒ
+	int numerator;		//Ð§Ð¸ÑÐ»Ð¸Ñ‚ÐµÐ»ÑŒ
+	int denominator;	//Ð—Ð½Ð°Ð¼ÐµÐ½Ð°Ñ‚ÐµÐ»ÑŒ
 public:
 	int get_integer()const
 	{
@@ -33,12 +33,10 @@ public:
 		if (denominator == 0)denominator = 1;
 		this->denominator = denominator;
 	}
-
 };
 
 void main()
 {
 	setlocale(LC_ALL, "");
 
-	cout << "Hello" << endl;
 }
