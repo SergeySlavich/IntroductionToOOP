@@ -11,11 +11,12 @@ using namespace std;
 //		1 / 2;
 //		2(3 / 4);
 //2. Написать методы :
-//		Fraction & to_proper();	//целую часть интегрирует в числитель
-//		Fraction& to_improper();//выделяет целую часть из числителя
+//		Fraction& to_improper();		//целую часть интегрирует в числитель
+//		Fraction& to_proper();			//выделяет целую часть из числителя
+//		Fraction& reduce();				//сокращает дробь
 //3. Перегрузить арифметические операторы : +, -, *, / ;
 //4. Перегрузить операторы++ / --;
-//5. Перегрузить составные присваивания : +=, -=, *=, /=;
+//5. Перегрузить составные присваивания : =, +=, -=, *=, /=;
 //6. Перегрузить операторы сравнения : == , != , > , < , >= , <= ;
 //7. Перегрузить оператор ввода с клавиатуры;
 
@@ -45,103 +46,69 @@ public:
 	}
 	void set_numerator(int numerator)
 	{
-		this->numerator = numerator;
+		if (numerator < 0)
+		{
+			this->numerator = -numerator;
+			this->integer = -integer;
+		}
+		else this->numerator = numerator;
 	}
 	void set_denominator(int denominator)
 	{
 		if (denominator == 0)denominator = 1;
-		this->denominator = denominator;
+		else if (denominator < 0)
+		{
+			this->denominator = -denominator;
+			this->integer = -integer;
+		}
+		else this->denominator = denominator;
 	}
 //В классе Fraction реализовать :
 //1. Конструкторы;
 	//					Constructors:
-	Fraction()											//Конструктор по умолчанию создает дробь: 0(0/1)
-	{
-		this->integer = 0;
-		this->numerator = 0;
-		this->denominator = 1;
-		//cout << "default constructor\t" << this << endl;
-	}
-	Fraction(int integer)								//Конструктор с одним аргументом создает целое число: integer
+	Fraction(int integer = 0)								//Конструктор с одним аргументом создает целое число: integer или конструктор по умолчанию
 	{
 		this->integer = integer;
 		this->numerator = 0;
-		this->denominator = 1;
+		this->set_denominator(denominator);
 		//cout << "1 arg constructor\t" << this << endl;
 	}
 	Fraction(int numerator, int denominator)			//Конструктор с двумя аргументами создает дробь без целой части: numerator/denominator
 	{
 		this->integer = 0;
-		if (denominator < 0 && numerator != 0)
-		{
-			this->numerator = -numerator;
-			this->denominator = -denominator;
-		}
-		else
-		{
-			this->numerator = numerator;
-			this->denominator = denominator;
-		}
-		if (numerator == 0)								//Если числитель равен 0, конструктор создает дробь 0(0/1)
-		{
-			Fraction();
-		}
-		else
-		{												//Если числитель не равен 0, конструктор создает дробь: numerator/denominator
-			this->numerator = numerator;
-			if (denominator == 0) this->denominator = 1;//Если знаменатель равен 0, конструктор создает целое число
-			else this->denominator = denominator;
-		}
+		if (numerator) Fraction();
+		else this->set_numerator(numerator);
+		this->set_denominator(denominator);
 		//cout << "2 arg constructor\t" << this << endl;
 	}
 	Fraction(int integer, int numerator, int denominator)//Конструктор с тремя аргументами создает дробь с целой частью: integer(numerator/denominator)
 	{
-		this->integer = integer;
-		this->numerator = numerator;
-		this->denominator = denominator;
 		if (integer == 0) Fraction(numerator, denominator);
-		else if (numerator == 0) Fraction(integer);
-		else if (denominator == 0)
-		{
-			this->denominator = 1;
-			if ((integer < 0 && numerator < 0) || (integer > 0 && numerator > 0)) integer += numerator;
-			else integer = -(integer + numerator);
-			Fraction(integer);
-		}
 		else
 		{
-			if (integer < 0 && numerator < 0 && denominator < 0)
-			{
-				this->integer = integer;
-				this->numerator = -numerator;
-				this->denominator = -denominator;
-			}
-			else if (integer < 0 && numerator > 0 && denominator > 0)
-			{
-				this->integer = integer;
-				this->numerator = numerator;
-				this->denominator = denominator;
-			}
-			else if (integer > 0 && numerator < 0 && denominator > 0)
-			{
-				this->integer = -integer;
-				this->numerator = -numerator;
-				this->denominator = denominator;
-			}
-			else if (integer > 0 && numerator > 0 && denominator < 0)
-			{
-				this->integer = -integer;
-				this->numerator = numerator;
-				this->denominator = -denominator;
-			}
+			if (numerator == 0) Fraction(integer);
 			else
 			{
 				this->integer = integer;
-				this->numerator = numerator;
-				this->denominator = denominator;
+				this->set_numerator(numerator);
+				this->set_denominator(denominator);
 			}
 		}
 		//cout << "3 arg constructor\t" << this << endl;
+	}
+	Fraction(double number)//Конструктор с 1 аргументом типа double - переводит десятичную дробь в обыкновенную
+	{
+		int digit = 0;
+		while (number)
+		{
+			number /= 10;
+			digit++;
+		}
+		cout << "digit = " << digit << endl;
+	}
+	~Fraction()
+	{
+		//cout << "Destructor\t\t" << this << endl;
 	}
 
 //1. Вывод на экран;
@@ -331,7 +298,7 @@ void main()
 	cout << "***HOME WORK FRACTION***\n";
 	cout << "\nConstructors:\n";
 
-	cout << "Fraction default:\n";
+	/*cout << "Fraction default:\n";
 	Fraction A;
 	A.print();
 
@@ -353,7 +320,7 @@ void main()
 
 	cout << "\nFraction with zero integer and 1 arguments:\n";
 	Fraction F(0);
-	F.print();
+	F.print();*/
 
 	cout << "\nFraction with zero integer and 3 arguments:\n";
 	Fraction G(0, 3, 5);
@@ -371,10 +338,14 @@ void main()
 	Fraction K(4, 6, 0);
 	K.print();
 
+	cout << "\nFraction with double argument:\n";
+	Fraction X(1.125);
+	X.print();
+
 	cout << endl;
 	cout << delimiter;
 
-	cout << "\nCorrect fraction to incorrect fraction\n";
+	/*cout << "\nCorrect fraction to incorrect fraction\n";
 	D.print();
 	D.to_proper();
 	cout << " => ";
@@ -471,5 +442,5 @@ void main()
 	cin >> integer >> numerator >> denominator;
 	Fraction V(integer, numerator, denominator);
 	cout << "\nВы ввели " << V << endl;
-	cout << delimiter;
+	cout << delimiter;*/
 }
