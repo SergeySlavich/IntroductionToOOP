@@ -311,9 +311,9 @@ bool operator==(const Fraction& left, const Fraction& right)
 {
 	return (((left.get_integer() * left.get_denominator() + left.get_numerator()) * right.get_denominator()) == ((right.get_integer() * right.get_denominator() + right.get_numerator()) * left.get_denominator()));
 }
-bool operator!=(const Fraction& left, const Fraction& right)
+bool operator!=(Fraction left, Fraction right)
 {
-	return (((left.get_integer() * left.get_denominator() + left.get_numerator()) * right.get_denominator()) != ((right.get_integer() * right.get_denominator() + right.get_numerator()) * left.get_denominator()));
+	return !(left == right);
 }
 bool operator>(const Fraction& left, const Fraction& right)
 {
@@ -325,7 +325,7 @@ bool operator<(const Fraction& left, const Fraction& right)
 }
 bool operator>=(const Fraction& left, const Fraction& right)
 {
-	return (((left.get_integer() * left.get_denominator() + left.get_numerator()) * right.get_denominator()) >= ((right.get_integer() * right.get_denominator() + right.get_numerator()) * left.get_denominator()));
+	return !(left < right);
 }
 bool operator<=(const Fraction& left, const Fraction& right)
 {
