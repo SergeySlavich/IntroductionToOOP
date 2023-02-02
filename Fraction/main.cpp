@@ -287,6 +287,7 @@ bool operator<=(const Fraction& left, const Fraction& right)
 }
 
 //#define CONSTRUCTOR_CHECK
+//#define COMPARISON_OPERATORS
 
 void main()
 {
