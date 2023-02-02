@@ -120,7 +120,7 @@ public:
 			numerator *= 10;
 			this->set_numerator((int)numerator);
 			this->set_denominator(this->get_denominator() * 10);
-			cout << numerator << endl;
+			//cout << numerator << endl;
 		}
 	}
 	~Fraction()
@@ -166,15 +166,25 @@ public:
 	Fraction& reduce()			//сокращает дробь
 	{
 		this->to_improper();
-		for (int i = 2; ; i++)
+		int more, less, rest = 0;
+		if (this->get_numerator() > this->get_denominator())
 		{
-			if (!(this->get_numerator() % i) && !(this->get_denominator() % i))
-			{
-				this->set_numerator(this->get_numerator() / i);
-				this->set_denominator(this->get_denominator() / i);
-			}
+			more = this->get_numerator();
+			less = this->get_denominator();
 		}
+		else
+		{
+			more = this->get_denominator();
+			less = this->get_numerator();
+		}
+		do
+		{
+			rest = more % less;
+			more = less;
+			less = rest;
+		} while (rest);
 	}
+
 //4. Перегрузить операторы++ / --;
 	Fraction& operator++()
 	{
@@ -207,6 +217,42 @@ public:
 		set_integer(integer);
 		set_numerator(numerator);
 		set_denominator(denominator);
+		return *this;
+	}
+
+//5. Перегрузить составные присваивания : +=, -=, *=, /=;
+	Fraction& operator=(const Fraction& other)
+	{
+		this->set_integer(other.get_integer());
+		this->set_numerator(other.get_numerator());
+		this->set_denominator(other.get_denominator());
+	}
+	Fraction& operator+=(const Fraction& other)
+	{
+		Fraction res;
+		res = *this + other;
+		*this = res;
+		return *this;
+	}
+	Fraction& operator-=(const Fraction& other)
+	{
+		Fraction res;
+		res = *this - other;
+		*this = res;
+		return *this;
+	}
+	Fraction& operator*=(const Fraction& other)
+	{
+		Fraction res;
+		res = *this * other;
+		*this = res;
+		return *this;
+	}
+	Fraction& operator/=(const Fraction& other)
+	{
+		Fraction res;
+		res = *this + other;
+		*this = res;
 		return *this;
 	}
 };
@@ -258,44 +304,6 @@ Fraction operator/(const Fraction& left, const Fraction& right)
 	res.set_denominator(left.get_denominator() * (right.get_integer() * right.get_denominator() + right.get_numerator()));
 	res.to_improper();
 	return res;
-}
-
-//5. Перегрузить составные присваивания : +=, -=, *=, /=;
-Fraction& operator+=(Fraction& left, const Fraction& right)
-{
-	Fraction res;
-	res.set_numerator((left.get_integer() * left.get_denominator() + left.get_numerator()) * right.get_denominator() + (right.get_integer() * right.get_denominator() + right.get_numerator()) * left.get_denominator());
-	res.set_denominator(left.get_denominator() * right.get_denominator());
-	res.to_improper();
-	left = res;
-	return left;
-}
-Fraction& operator-=(Fraction& left, const Fraction& right)
-{
-	Fraction res;
-	res.set_numerator((left.get_integer() * left.get_denominator() + left.get_numerator()) * right.get_denominator() - (right.get_integer() * right.get_denominator() + right.get_numerator()) * left.get_denominator());
-	res.set_denominator(left.get_denominator() * right.get_denominator());
-	res.to_improper();
-	left = res;
-	return left;
-}
-Fraction& operator*=(Fraction& left, const Fraction& right)
-{
-	Fraction res;
-	res.set_numerator((left.get_integer() * left.get_denominator() + left.get_numerator()) * (right.get_integer() * right.get_denominator() + right.get_numerator()));
-	res.set_denominator(left.get_denominator() * right.get_denominator());
-	res.to_improper();
-	left = res;
-	return left;
-}
-Fraction& operator/=(Fraction& left, const Fraction& right)
-{
-	Fraction res;
-	res.set_numerator((left.get_integer() * left.get_denominator() + left.get_numerator()) * right.get_denominator());
-	res.set_denominator(left.get_denominator() * (right.get_integer() * right.get_denominator() + right.get_numerator()));
-	res.to_improper();
-	left = res;
-	return left;
 }
 
 //6. Перегрузить операторы сравнения : == , != , > , < , >= , <= ;
