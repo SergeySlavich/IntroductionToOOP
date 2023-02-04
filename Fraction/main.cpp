@@ -156,6 +156,13 @@ public:
 		set_denominator(denominator);
 		return *this;
 	}
+
+	//					Type-cast operators:
+	operator int()const
+	{
+		return Fraction(*this).to_proper().integer;
+		//вызываем конструктор для создания безымянной копии объекта для вызова константного метода
+	}
 };
 
 std::ostream& operator<<(std::ostream& os, const Fraction& obj)
@@ -310,4 +317,14 @@ void main()
 	E.print();
 #endif // CONSTRUCTOR_CHECK
 
+#ifdef HOME_WORK_1
+	Fraction B(2, 3, 4);
+	double b = B;
+	cout << b << endl;
+#endif // HOME_WORK_1
+
+#ifdef HOME_WORK_2
+	Fraction B = 2.75;
+	cout << B << endl;
+#endif // HOME_WORK_2
 }
