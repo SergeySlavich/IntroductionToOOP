@@ -292,14 +292,33 @@ public:
 		res.to_proper();
 		return res.get_integer();
 	}
-	operator double()const
+	explicit operator double()const
 	{
-		Fraction res;
+		/*Fraction res;
 		res.set_integer(this->get_integer());
 		res.set_numerator(this->get_numerator());
 		res.set_denominator(this->get_denominator());
 		res.to_improper();
-		return (double) res.get_numerator() / res.get_denominator();
+		return (double) res.get_numerator() / res.get_denominator();*/
+		return integer + (double)numerator / denominator;
+	}
+
+	std::istream& operator>>(std::istream& is, Fraction& obj)
+	{
+		int number[3] = {};
+		const int SIZE = 32;
+		char buffer[SIZE] = {};
+		char delimiters[] = "/ ()";
+
+		is >> buffer;
+
+		int n = 0;	//счетчик чисел в введенной строке
+		for (char* pch = strtok(buffer, delimiters); pch; pch = strtok(NULL, delimiters))
+			number[n++] = atoi(pch);	//atoi строку в число
+
+
+
+		return is;
 	}
 };
 
@@ -387,7 +406,7 @@ bool operator<=(const Fraction& left, const Fraction& right)
 }
 
 //#define HOME_WORK_0
-#define HOME_WORK_1
+//#define HOME_WORK_1
 #define HOME_WORK_2
 
 void main()
@@ -566,4 +585,5 @@ void main()
 	Fraction C = 2.75;
 	cout << C << endl;
 #endif // HOME_WORK_2
+
 }
