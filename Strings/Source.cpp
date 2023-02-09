@@ -28,21 +28,21 @@ public:
 		//this->str = new char[size] {};
 		cout << "DefConstructor:\t" << this << endl;
 	}
-	String(const char* str) :size(strlen(str) + 1), str(new char[size] {})
+	String(const char* str) :String(strlen(str) + 1)
 	{
 		//this->size = strlen(str) + 1;//функция strlen возвращает размер строки в символах, но в классе хранится размер строки в Байтах, т.е. с учетом 0 в конце строки
 		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++) this->str[i] = str[i];
 		cout << "1ArgConstructor:\t" << this << endl;
 	}
-	String(const String& other) :size(other.size), str(new char[size] {})
+	String(const String& other) :String(other.str)
 	{
 		//Deep Copy
-		//this->size = other.size;
-		//this->str = new char[size] {};
-		for (int i = 0; i < size; i++)
-			this->str[i] = other.str[i];
-		cout << "CopyConstructor:\t" << endl;
+			//this->size = other.size;
+			//this->str = new char[size] {};
+			//for (int i = 0; i < size; i++)
+				//this->str[i] = other.str[i];
+		cout << "CopyConstructor:" << this << endl;
 	}
 	String(String&& other)noexcept:size(other.size), str(other.str)
 	{
