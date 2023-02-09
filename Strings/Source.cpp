@@ -22,33 +22,33 @@ public:
 		return str;
 	}
 	//				Constructors:
-	explicit String(int size = 80)
+	explicit String(int size = 80) :size(size), str(new char[size] {})
 	{
-		this->size = size;
-		this->str = new char[size] {};
+		//this->size = size;
+		//this->str = new char[size] {};
 		cout << "DefConstructor:\t" << this << endl;
 	}
-	String(const char* str)
+	String(const char* str) :size(strlen(str) + 1), str(new char[size] {})
 	{
-		this->size = strlen(str) + 1;//функция strlen возвращает размер строки в символах, но в классе хранится размер строки в Байтах, т.е. с учетом 0 в конце строки
-		this->str = new char[size] {};
+		//this->size = strlen(str) + 1;//функция strlen возвращает размер строки в символах, но в классе хранится размер строки в Байтах, т.е. с учетом 0 в конце строки
+		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++) this->str[i] = str[i];
 		cout << "1ArgConstructor:\t" << this << endl;
 	}
-	String(const String& other)
+	String(const String& other) :size(other.size), str(new char[size] {})
 	{
 		//Deep Copy
-		this->size = other.size;
-		this->str = new char[size] {};
+		//this->size = other.size;
+		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++)
 			this->str[i] = other.str[i];
 		cout << "CopyConstructor:\t" << endl;
 	}
-	String(String&& other)noexcept
+	String(String&& other)noexcept:size(other.size), str(other.str)
 	{
 		//Shallow Copy
-		this->size = other.size;
-		this->str = other.str;		//Shallow copy
+		//this->size = other.size;
+		//this->str = other.str;		//Shallow copy
 		other.size = 0;
 		other.str = nullptr;		//nullptr - это указатель на 0
 		cout << "MoveConstructor:" << this << endl;
@@ -121,14 +121,15 @@ String operator+(const String& left, const String& right)
 }
 
 #define BASE_CHECK
+//#define CALLING_CONSTRUCTOR
 
 void main()
 {
 	setlocale(LC_ALL, "");
 
 #ifdef BASE_CHECK
-	//String str1(5);
-	//str1.print();
+	String str(5);
+	str.print();
 
 	String str1 = "Hello"; //"Hello" - это строковая константа
 	str1 = str1;
@@ -145,11 +146,13 @@ void main()
 	cout << str3 << endl;
 
 	String str4 = str3;	//CopyConstructor
+	str4.print();
 
 	/*str1 = str3;
 	cout << str1 << endl;*/
 #endif
 
+#ifdef CALLING_CONSTRUCTOR
 	String str1;			//Default constructor
 	str1.print();
 	String str2 = "Hello";	//Single argument constructor
@@ -157,16 +160,18 @@ void main()
 	String str3 = str2;		//CopyConstructor
 	str3.print();
 	String str4();			//Здесь не вызывается конструктор, 
-							//потому что не создается объект
-							//Здесь объявляется функция str4(), которая не принимает никаких параметров,
-							//и возвращает значение типа String.
-	//str4.print();			//str4 - это не объект, это функция, а для функции нельзя вызвать метод.
-	//если мы хотим явно вызвать конструктор по умолчанию, то это можно сделат так:
+	//потому что не создается объект
+	//Здесь объявляется функция str4(), которая не принимает никаких параметров,
+	//и возвращает значение типа String.
+//str4.print();			//str4 - это не объект, это функция, а для функции нельзя вызвать метод.
+//если мы хотим явно вызвать конструктор по умолчанию, то это можно сделат так:
 	String str5{};			//Явный вызов конструктора по умолчанию.
 	str5.print();
 	String str6{ 22 };
 	str6.print();
 	String str7{ "World" };
 	str7.print();
-	String str8{ str7 };	//Copy constructor
+	String str8{ str7 };	//Copy constructor  
+#endif // CALLING_CONSTRUCTOR
+
 }
