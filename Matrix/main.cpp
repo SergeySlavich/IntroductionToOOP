@@ -1,114 +1,187 @@
 ﻿#include<iostream>
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;;
 
-//TODO:
-//Реализовать класс Matrix, описывающий матрицу, и написать все необходимые методы для этого класса.
+class String;
+String operator+(const String& left, const String& right);
 
-class Matrix
+class String
 {
+	int size;		//размер строки в Байтах
+	char* str;		//адрес строки в динамической памяти
 public:
-	int x;
-	int y;
-	int matrix;
-	//					Setters:
-	void set_cell(int x, int y, int number)
+	int get_size()const
 	{
-		cout << "x = " << x << " y = " << y << endl;
-		cout << "&x = " << &x << " &y = " << &y << endl;
-		this->matrix[&x][&y] = number;
+		return size;
 	}
-	//					Getters:
-	int get_cell(int x, int y)
+	const char* get_str()const
 	{
-		//cout << "getter begin" << endl;
-		int i = x;
-		cout << "matrix[&y][&x] = ";
-		cout << this->matrix[&y][&x];
-		return this->matrix[&x][&y];
+		return str;
 	}
-	int get_rows()
+	char* get_str()
 	{
-		return y;
+		return str;
 	}
-	int get_cols()
+
+	//				Constructors:
+	explicit String(int size = 80) :size(size), str(new char[size] {})
 	{
-		return x;
+		cout << "DefConstructor:\t" << this << endl;
 	}
-	//					Constructors:
-	Matrix(int x, int y = 1)
+	String(const char* str) :String(strlen(str) + 1)
 	{
-		this->x = x;
-		this->y = y;
-		int** matrix = new int* [y];
-		for (int i = 0; i < y; i++)
-		{
-			matrix[i] = new int[x];
-			cout << "matrix[i] = " << matrix[i] << endl;
-			//cout << "*matrix[i] = " << *matrix[i] << endl;
-			for (int j = 0; j < x; j++)
-			{
-				matrix[i][j] = i*10+j;
-				//cout << "i j " << i << ' ' << j << endl;
-				//cout << "x y " << x << ' ' << y << endl;
-				cout << "matrix[i][j] " << matrix[i][j] << endl;
-			}
-		}
-		cout << "Constructor:\t\t" << this << endl;
+		for (int i = 0; i < size; i++)this->str[i] = str[i];
+		cout << "1ArgConstructor:" << this << endl;
 	}
-	~Matrix()
+	String(const String& other) :String(other.str)
 	{
-		for (int i = 0; i < get_rows(); i++)
-		{
-			//delete[] matrix[i];
-		}
-		delete[] &matrix;
-		cout << "Destructor:\t\t" << endl;
+		//Deep copy - побитовое копирование
+		cout << "CopyConstructor:" << this << endl;
 	}
-	//					Methods:
-	void print()
+	String(String&& other)noexcept :size(other.size), str(other.str)
 	{
-		cout << "begin printing..." << endl;
-		for (int i = 0; i < get_rows(); i++)
-		{
-			//cout << "--matrix[" << i << "] = " << matrix[i] << endl;
-			for (int j = 0; j < get_cols(); j++)
-			{
-				cout << "---" << matrix[&i][&j] << endl;
-				//cout << "get_cell[" << i << "][" << j << "] = " << this->get_cell(i, j) << '\t';
-			}
-			cout << endl;
-		}
-		cout << "printed" << endl;
+		//Shallow copy - поверхностное копирование
+		other.size = 0;
+		other.str = nullptr;		//nullptr - это указатель на ноль.
+		cout << "MoveConstructor:" << this << endl;
+	}
+	~String()
+	{
+		delete this->str;
+		cout << "Destructor:\t" << this << endl;
+	}
+
+	//				Operators:
+	String& operator=(const String& other)
+	{
+		//			l-value = r-value;
+		if (this == &other)return *this;
+		delete[] this->str;
+		this->size = other.size;
+		this->str = new char[size] {};
+		for (int i = 0; i < size; i++)
+			this->str[i] = other.str[i];
+		cout << "CopyAssignment:\t" << this << endl;
+		return *this;
+	}
+	String& operator=(String&& other)
+	{
+		this->size = other.size;
+		this->str = other.str;
+		other.size = 0;
+		other.str = nullptr;
+		cout << "MoveAssignment:\t" << this << endl;
+		return *this;
+	}
+
+	String& operator+=(const String& other)
+	{
+		return *this = *this + other;
+	}
+
+	const char& operator[](int i)const
+	{
+		return str[i];
+	}
+	char& operator[](int i)
+	{
+		return str[i];
+	}
+
+
+
+	//				Methods:
+	void print()const
+	{
+		cout << "Size:\t" << size << endl;
+		cout << "Str:\t" << str << endl;
 	}
 };
+
+String operator+(const String& left, const String& right)
+{
+	String cat(left.get_size() + right.get_size() - 1);
+	for (int i = 0; i < left.get_size(); i++)
+		cat[i] = left[i];
+	//cat.get_str()[i] = left.get_str()[i];
+	for (int i = 0; i < right.get_size(); i++)
+		cat[i + left.get_size() - 1] = right[i];
+	//cat.get_str()[i + left.get_size() - 1] = right.get_str()[i];
+	return cat;
+}
+
+std::ostream& operator<<(std::ostream& os, const String& obj)
+{
+	return os << obj.get_str();
+}
+
+#define BASE_CHECK
+//#define CALLING_CONSTRUCTORS
 
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef BASE_CHECK
+	String str(5);
+	str.print();
 
-	//int B[] = { 1, 2, 3 };
-	Matrix A(2, 3);
-	cout << "rows " << A.get_rows() << endl;
-	cout << "cols " << A.get_cols() << endl;
-	cout << "--------------------------------" << endl;
-	//cout << "matrix[x][y] = " << matrix[1][1] << endl;
-	cout << "getters--------------------------------" << endl;
-	cout << "get_cells() ";
-	cout << A.get_cell(0, 0) << endl;
-	cout << "get_cells() " << A.get_cell(0, 1) << endl;
-	cout << "get_cells() " << A.get_cell(0, 2) << endl;
-	cout << "get_cells() " << A.get_cell(1, 0) << endl;
-	cout << "get_cells() " << A.get_cell(1, 1) << endl;
-	cout << "get_cells() " << A.get_cell(1, 2) << endl;
-	cout << "print---------------------------------" << endl;
-	A.print();
-	//A.set_cell(0, 0, 11);
-	//A.set_cell(1, 0, 21);
-	//A.set_cell(2, 0, 31);
-	////cout << A.get_cell(0, 0);
-	//A.set_cell(0, 1, 12);
-	//A.set_cell(1, 1, 22);
-	//A.set_cell(2,1, 32);
-	cout << "---------------------------------" << endl;
-	A.print();
+	String str1 = "Hello";	//"Hello" - это строковая константа
+	str1 = str1;
+	cout << str1 << endl;
+
+	String str2 = "World";
+	cout << str2 << endl;
+
+	//cout << "\n-----------------------------------------\n";
+	//str1 += str2;
+	//cout << str1 << endl;
+	//cout << "\n-----------------------------------------\n";
+
+	String str3;
+	str3 = str1 + str2;	//Move constructor
+	cout << str3 << endl;
+
+	String str4 = str3;	//Copy constructor
+	str4.print();
+	//str1 = str3;
+	//cout << str1 << endl;
+
+	/*
+	Deep copy:
+	CopyConstructor;
+	CopyAssignment
+	------------------------------
+	Shallow copy:
+	MoveConstructor
+	MoveAssignment
+	other
+	Move semantic C++11, C++03
+	R-value reference
+	------------------------------
+	*/
+#endif // BASE_CHECK
+
+#ifdef CALLING_CONSTRUCTORS
+	String str1;	//Default constructor
+	str1.print();
+	String str2 = "Hello";	//Single argument constructor
+	str2.print();
+	String str3 = str2;	//Copy constructor
+	str3.print();
+	String str4();	//Здесь не вызывается никакой конструктор, потому что НЕ создается объект,
+	//Здесь объявлется функция str4(), которая не принимает никаких параметров,
+	//и возвращает значение типа String.
+//str4.print();	//str4 - это НЕ объект, это функция, а для функции нельзя вызвать метод.
+//Если мы хотим явно вызвать конструктор по умолчанию, то это можно сделать так:
+	String str5{};	//Явный вызов конструктора по умолчанию.
+	str5.print();
+	String str6{ 22 };
+	str6.print();
+	String str7{ "World" };
+	str7.print();
+	String str8{ str7 };	//Copy constructor  
+#endif // CALLING_CONSTRUCTORS
+
 }
