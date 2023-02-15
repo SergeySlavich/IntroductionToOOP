@@ -1,9 +1,10 @@
-﻿#include<iostream>
+﻿//String.cpp
 #include"String.h"
 
-/////////////////////////////////////////////////////////////////
-/////////// Определение класса - CLASS DEFINITION  //////////////
-/////////////////////////////////////////////////////////////////
+///------------------------------------------------------------------------///
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////		ÎÏÐÅÄÅËÅÍÈÅ ÊËÀÑÑÀ - CLASS DEFINITION		//////////////
 
 int String::get_size()const
 {
@@ -23,21 +24,21 @@ String::String(int size) :size(size), str(new char[size] {})
 {
 	cout << "DefConstructor:\t" << this << endl;
 }
-String::String(const char* str) :String(strlen(str) + 1)
+String::String(const char* str) : String(strlen(str) + 1)
 {
 	for (int i = 0; i < size; i++)this->str[i] = str[i];
 	cout << "1ArgConstructor:" << this << endl;
 }
-String::String(const String& other) :String(other.str)
+String::String(const String& other) : String(other.str)
 {
-	//Deep copy - побитовое копирование
+	//Deep copy - ïîáèòîâîå êîïèðîâàíèå
 	cout << "CopyConstructor:" << this << endl;
 }
 String::String(String&& other)noexcept :size(other.size), str(other.str)
 {
-	//Shallow copy - поверхностное копирование
+	//Shallow copy - ïîâåðõíîñòíîå êîïèðîâàíèå
 	other.size = 0;
-	other.str = nullptr;		//nullptr - это указатель на ноль.
+	other.str = nullptr;		//nullptr - ýòî óêàçàòåëü íà íîëü.
 	cout << "MoveConstructor:" << this << endl;
 }
 String::~String()
@@ -68,10 +69,12 @@ String& String::operator=(String&& other)
 	cout << "MoveAssignment:\t" << this << endl;
 	return *this;
 }
+
 String& String::operator+=(const String& other)
 {
 	return *this = *this + other;
 }
+
 const char& String::operator[](int i)const
 {
 	return str[i];
@@ -105,6 +108,5 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 	return os << obj.get_str();
 }
 
-/////////////////////////////////////////////////////////////////
-/////////// Конец определения класса - CLASS DEFINITION END  ////
-/////////////////////////////////////////////////////////////////
+////////////// ÊÎÍÅÖ ÎÏÐÅÄÅËÅÍÈß ÊËÀÑÑÀ - CLASS DEFINITION END	//////////////
+//////////////////////////////////////////////////////////////////////////////

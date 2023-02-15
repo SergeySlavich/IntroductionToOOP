@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Strings", "Strings\Strings.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Matrix", "Matrix\Matrix.vcxproj", "{EE939B76-065B-453E-BC90-421EB49D1A3A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Inheritance", "Inheritance\Inheritance.vcxproj", "{B15CF7E5-14DC-48C4-A4F0-02C05BBBF1D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{EE939B76-065B-453E-BC90-421EB49D1A3A}.Release|x64.Build.0 = Release|x64
 		{EE939B76-065B-453E-BC90-421EB49D1A3A}.Release|x86.ActiveCfg = Release|Win32
 		{EE939B76-065B-453E-BC90-421EB49D1A3A}.Release|x86.Build.0 = Release|Win32
+		{B15CF7E5-14DC-48C4-A4F0-02C05BBBF1D3}.Debug|x64.ActiveCfg = Debug|x64
+		{B15CF7E5-14DC-48C4-A4F0-02C05BBBF1D3}.Debug|x64.Build.0 = Debug|x64
+		{B15CF7E5-14DC-48C4-A4F0-02C05BBBF1D3}.Debug|x86.ActiveCfg = Debug|Win32
+		{B15CF7E5-14DC-48C4-A4F0-02C05BBBF1D3}.Debug|x86.Build.0 = Debug|Win32
+		{B15CF7E5-14DC-48C4-A4F0-02C05BBBF1D3}.Release|x64.ActiveCfg = Release|x64
+		{B15CF7E5-14DC-48C4-A4F0-02C05BBBF1D3}.Release|x64.Build.0 = Release|x64
+		{B15CF7E5-14DC-48C4-A4F0-02C05BBBF1D3}.Release|x86.ActiveCfg = Release|Win32
+		{B15CF7E5-14DC-48C4-A4F0-02C05BBBF1D3}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
