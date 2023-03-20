@@ -1,7 +1,6 @@
 ﻿//Fraction.cpp
-#include<iostream>
+#define _CRT_SECURE_NO_WARNINGS
 #include"Fraction.h"
-using namespace std;
 
 int Fraction::get_integer()const
 {
@@ -42,11 +41,11 @@ void Fraction::set_denominator(int denominator)
 //В классе Fraction реализовать :
 //1. Конструкторы;
 	//					Constructors:
-Fraction::Fraction(double integer = 0)								//Конструктор с одним аргументом создает целое число: integer или конструктор по умолчанию
+Fraction::Fraction(double integer)								//Конструктор с одним аргументом создает целое число: integer или конструктор по умолчанию
 {
 	if (!(integer - (int)integer))
 	{
-		this->set_integer(integer);
+		this->set_integer((int)integer);
 		this->set_numerator(0);
 		this->set_denominator(1);
 		//cout << "1 arg constructor\t" << this << endl;
@@ -176,6 +175,7 @@ Fraction& Fraction::operator++()
 {
 	if (!integer) this->set_numerator(get_numerator() + get_denominator());
 	else this->set_integer(this->get_integer() + 1);
+	return *this;
 }
 Fraction Fraction::operator++(int)
 {

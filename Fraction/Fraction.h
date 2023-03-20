@@ -1,7 +1,7 @@
 ﻿//Fraction.h
 #pragma once
 #include<iostream>
-#include"Fraction.cpp"
+#include<windows.h>
 using namespace std;
 
 class Fraction;
@@ -54,5 +54,6 @@ public:
 	//	Преобразование типов
 	operator int()const;
 	explicit operator double()const;
+	std::ostream& operator<<(std::ostream& os);
 	std::istream& operator>>(std::istream& is);
 };

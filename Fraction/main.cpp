@@ -2,7 +2,6 @@
 #include<iostream>
 #include<windows.h>
 #include"Fraction.h"
-#include"Fraction.cpp"
 using namespace std;
 
 //TODO:
@@ -180,7 +179,7 @@ void main()
 	cout << "Conversion Fraction to double:\n";
 	Fraction B(2, 3, 4);
 	B.print();
-	double b = B;
+	double b = (double)B;
 	cout << b << endl;
 #endif // HOME_WORK_1
 
@@ -188,7 +187,7 @@ void main()
 	cout << delimiter << endl;
 	cout << "Conversion from other to class:\n";
 	Fraction C = 2.75;
-	cout << C << endl;
+	C.print();
 #endif // HOME_WORK_2
 
 }
