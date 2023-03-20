@@ -8,10 +8,6 @@ using std::endl;
 #define BASE_CHECK
 //#define CALLING_CONSTRUCTORS
 
-//TODO :
-//Реализовать класс Matrix, описывающий матрицу, и написать все необходимые методы для этого класса.
-
-
 void main()
 {
 	setlocale(LC_ALL, "");
